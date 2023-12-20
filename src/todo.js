@@ -26,3 +26,9 @@ export function createNote(title, detail){
         detail: detail,
     };
 }
+
+export function createProject(title){
+    return {
+        title: title,
+    };
+}

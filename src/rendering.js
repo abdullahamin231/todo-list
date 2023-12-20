@@ -247,8 +247,30 @@ export function createNoteForm(){
     addButton.textContent = 'Create Note';
     top.appendChild(addButton);
     form.appendChild(top);
+}
 
+export function createProjectForm(){
+    const form = document.getElementById('form');
+    const top = document.getElementsByClassName('modal-current-project-todo')[0];
+    top.innerHTML = '';
+    // Create and append the title textarea with its attributes
+    const titleTextarea = document.createElement('textarea');
+    titleTextarea.setAttribute('name', 'title');
+    titleTextarea.setAttribute('id', 'textarea-title');
+    titleTextarea.setAttribute('cols', '30');
+    titleTextarea.setAttribute('rows', '1');
+    titleTextarea.setAttribute('placeholder', 'Title: Pay bills...');
+    titleTextarea.setAttribute('required', '');
 
+    top.appendChild(titleTextarea);
+
+    const addButton = document.createElement('button');
+    addButton.classList.add('priorBtn');
+    addButton.setAttribute('id', 'add');
+    addButton.setAttribute('type', 'submit');
+    addButton.textContent = 'Create Note';
+    top.appendChild(addButton);
+    form.appendChild(top);
 }
 
 export function renderNotes(){

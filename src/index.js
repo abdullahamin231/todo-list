@@ -1,7 +1,8 @@
 let todoList = [];
 let notesList = [];
-import {createTodo,handleCreateButton, createNote} from "./todo.js"
-import {handleRendering, renderNotes, createTodoForm, createNoteForm} from "./rendering.js";
+let projectsList = [];
+import {createTodo,handleCreateButton, createNote, createProject} from "./todo.js"
+import {handleRendering, renderNotes, createTodoForm, createNoteForm, createProjectForm} from "./rendering.js";
 const main = document.getElementById('main');
 let createWhat = 'todo';
 getFromLocalStorage();
@@ -26,6 +27,12 @@ document.getElementById('form').addEventListener('submit', function(e) {
         console.log(notesList);
         notesList.push(newNote);
         localStorage.setItem("notesList", JSON.stringify(notesList));
+    } else if (createWhat == 'project'){
+        const title = document.getElementById('textarea-title').value;
+        const newProject = createProject(title);
+        console.log(newProject);
+        projectsList.push(newProject);
+        localStorage.setItem("projectsList", JSON.stringify(projectsList));
     }
     main.style.filter = 'blur(0px)';
     document.getElementById('modal').style.visibility = document.getElementById('modal').style.visibility == "visible" ? "hidden" : "visible" ;
@@ -43,6 +50,7 @@ todoBtn.addEventListener('click', ()=>{
 const projectBtn = document.getElementById('Btnproject');
 projectBtn.addEventListener('click', ()=>{
     createWhat = 'project';
+    createProjectForm();
 })
 const noteBtn = document.getElementById('Btnnote');
 noteBtn.addEventListener('click', ()=>{
