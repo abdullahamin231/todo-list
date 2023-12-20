@@ -2,6 +2,7 @@ const main = document.getElementsByClassName('current-project')[0];
 console.log(main);
 let todoList = [];
 let notesList = [];
+let projectsList = [];
 function getFromLocalStorage(){
     const gottenList = localStorage.getItem("todoList");
     if(gottenList){
@@ -10,6 +11,10 @@ function getFromLocalStorage(){
     const gottenNotes = localStorage.getItem("notesList");
     if(gottenNotes){
         notesList = JSON.parse(gottenNotes);
+    }
+    const gottenProjects = localStorage.getItem("projectsList");
+    if(gottenProjects){
+        projectsList = JSON.parse(gottenProjects);
     }
 }
 
@@ -124,6 +129,14 @@ export function handleRendering(filterBy){
             bigDiv.style.display = 'none';
         } else if(filterBy == 'home') {
             bigDiv.style.display = 'flex';
+        } else {
+            for(let j = 0; j < projectsList.length; j++){
+                if(((filterBy == projectsList[j].title && item.project === projectsList[j].title))){
+                    bigDiv.style.display = 'flex';
+                } else {
+                    bigDiv.style.display = 'none';
+                }
+            }
         }
     }
     
@@ -337,6 +350,81 @@ function showDetails(index){
         }
     }
 }
+
+// Function to create a button element
+function createButton(id, text) {
+    const button = document.createElement('button');
+    button.id = id;
+    button.textContent = text;
+    return button;
+}
+
+export function handleProjects() {
+    const allProjects = document.getElementsByClassName('all-projects')[0];
+    allProjects.innerHTML = '';
+    // Create Home button
+    const homeButton = createButton('home', 'Home');
+    const homeBtnDiv = document.createElement('div');
+    homeBtnDiv.id = 'btn';
+    homeBtnDiv.appendChild(homeButton);
+    allProjects.appendChild(homeBtnDiv);
+    
+
+    const todayBtn = createButton('today', 'Today');
+    const todayBtnDiv = document.createElement('div');
+    todayBtnDiv.id = 'btn';
+    todayBtnDiv.appendChild(todayBtn);
+    allProjects.appendChild(todayBtnDiv);
+
+    const weekBtn = createButton('week', 'Week');
+    const weekBtnDiv = document.createElement('div');
+    weekBtnDiv.id = 'btn';
+    weekBtnDiv.appendChild(weekBtn);
+    allProjects.appendChild(weekBtnDiv);
+
+    // Create Projects button
+    const pBtn = createButton('', 'Projects');
+    const pBtnDiv = document.createElement('div');
+    pBtnDiv.id = 'btn';
+    pBtnDiv.appendChild(pBtn);
+    allProjects.appendChild(pBtnDiv);
+
+    const projectsDiv = document.createElement('div');
+    const ul = document.createElement('ul');
+    projectsDiv.id = 'projects';
+    for(let i = 0; i < projectsList.length; i++){
+        const title = projectsList[i].title;
+        console.log('project list was ran');
+        const projectBtnDiv = document.createElement('div');
+        projectBtnDiv.id = 'btn';
+        const projectBtnDivBtn = document.createElement('button')
+        projectBtnDivBtn.textContent = title;
+        projectBtnDivBtn.id = 'title';
+        projectBtnDivBtn.classList.add('whichProject');
+        projectBtnDiv.appendChild(projectBtnDivBtn);
+        ul.appendChild(projectBtnDiv);
+    }
+    
+    projectsDiv.appendChild(ul);
+    allProjects.appendChild(projectsDiv);
+    var btnDiv = document.createElement('div');
+    btnDiv.id = 'btn';
+    var notesButton = document.createElement('button');
+    notesButton.id = 'notes';
+    notesButton.textContent = 'Notes';
+    btnDiv.appendChild(notesButton);
+    allProjects.appendChild(btnDiv);
+
+    var createBtnDiv = document.createElement('div');
+    createBtnDiv.id = 'createBtnDiv';
+    var createBtn = document.createElement('button');
+    createBtn.id = 'createBtn';
+    createBtn.textContent = '+';
+    createBtnDiv.appendChild(createBtn);
+    allProjects.appendChild(createBtnDiv);
+}
+
+
 
 function handleEditing(index){
     for(let i = 0; i < todoList.length; i++){

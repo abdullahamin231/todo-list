@@ -2,10 +2,13 @@ let todoList = [];
 let notesList = [];
 let projectsList = [];
 import {createTodo,handleCreateButton, createNote, createProject} from "./todo.js"
-import {handleRendering, renderNotes, createTodoForm, createNoteForm, createProjectForm} from "./rendering.js";
+import {handleRendering, renderNotes, createTodoForm, createNoteForm, createProjectForm, handleProjects} from "./rendering.js";
 const main = document.getElementById('main');
 let createWhat = 'todo';
+let chosenProject = 'home';
 getFromLocalStorage();
+
+handleProjects();
 
 document.getElementById('form').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -14,8 +17,9 @@ document.getElementById('form').addEventListener('submit', function(e) {
         const details = document.getElementById('textarea-details').value;
         const date = document.getElementById('modal-date').value;
         const done = false;
-        let selectedP = document.getElementById('priority').value;    
-        const newTodo = createTodo(title, details, date, selectedP, done);
+        let selectedP = document.getElementById('priority').value;  
+        const newTodo = createTodo(title, details, date, selectedP, done, chosenProject);
+        chosenProject = '';
         console.log(newTodo);
         todoList.push(newTodo);
         localStorage.setItem("todoList", JSON.stringify(todoList));
@@ -30,10 +34,9 @@ document.getElementById('form').addEventListener('submit', function(e) {
     } else if (createWhat == 'project'){
         const title = document.getElementById('textarea-title').value;
         const newProject = createProject(title);
-        console.log(newProject);
         projectsList.push(newProject);
         localStorage.setItem("projectsList", JSON.stringify(projectsList));
-    }
+    } 
     main.style.filter = 'blur(0px)';
     document.getElementById('modal').style.visibility = document.getElementById('modal').style.visibility == "visible" ? "hidden" : "visible" ;
     window.location.reload();
@@ -41,6 +44,12 @@ document.getElementById('form').addEventListener('submit', function(e) {
 
 handleRendering('home');
 handleCreateButton();
+
+const projectBtns = document.getElementsByClassName('whichProject');
+[...projectBtns].forEach((btn) => btn.addEventListener('click', (e) => {
+    chosenProject = e.currentTarget.value;
+    handleRendering(chosenProject);
+}));
 
 const todoBtn = document.getElementById('Btntodo');
 todoBtn.addEventListener('click', ()=>{
@@ -101,35 +110,6 @@ closeEditBtn.addEventListener("click", ()=>{
     document.getElementById('editModal').style.visibility = "hidden";
 })
 
-
-// const detailsBtn = document.querySelectorAll('#todo-details-btn');
-// detailsBtn.forEach((btn) => {
-    //     btn.addEventListener("click", (e) => {
-        //         const index = e.currentTarget.dataset.index;
-        //         console.log('details was ran');
-        //         showDetails(index);
-        //     })
-        // })
-        
-        // const editBtn = document.querySelectorAll('.todo-edit');
-        // editBtn.forEach((btn) => {
-//     btn.addEventListener("click", (e) => {
-//         const index = e.currentTarget.dataset.index;
-//         console.log('edit button aws ran');
-//         handleEditing(index);
-//     })
-// })
-
-// const deleteBtn = document.querySelectorAll('.todo-delete');
-// deleteBtn.forEach((btn) => {
-    //     btn.addEventListener("click", (e) => {
-        //         const index = e.currentTarget.dataset.index;
-        //         todoList.splice(index, 1);
-        //         updateLocalStorage();
-        //         window.location.reload();
-        //     });
-        // });
-        
         
 function updateLocalStorage(){
     localStorage.setItem("todoList", JSON.stringify(todoList));
@@ -143,7 +123,12 @@ function getFromLocalStorage(){
     if(gottenNotes){
         notesList = JSON.parse(gottenNotes);
     }
+    const gottenProjects = localStorage.getItem("projectsList");
+    if(gottenProjects){
+        projectsList = JSON.parse(gottenProjects);
+    }
 }
+
 function resetButtonBorders() {
     todayBtn.style.border = 'none';
     homeBtn.style.border = 'none';

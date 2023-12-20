@@ -1,4 +1,4 @@
-export function createTodo(title, detail, dueDate, priority, done) {
+export function createTodo(title, detail, dueDate, priority, done, project) {
     console.log('Received parameters:', title, detail, dueDate, priority, done);
     return {
         title: title,
@@ -6,6 +6,7 @@ export function createTodo(title, detail, dueDate, priority, done) {
         dueDate: dueDate,
         priority: priority,
         done: done,
+        project: project,
     };
 }
 
