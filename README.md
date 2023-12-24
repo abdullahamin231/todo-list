@@ -1,9 +1,6 @@
 # TO-DO: Productivity App
 
-
-
 ## Features
-
 
 - Keep track of tasks with custom project folders and notes.
 
@@ -17,9 +14,6 @@
 
 - Data saved to local storage.
 
-
 ## Screenshots
 
 ![App Screenshot](https://snipboard.io/fIOqQF.jpg)
-
-
